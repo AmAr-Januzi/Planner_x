@@ -30,16 +30,19 @@ const IMPORTANCE_PTS = { high: 30, medium: 20, low: 10 };
 const GOAL_PTS = { W: 40, M: 80, Y: 200 };
 
 // The parts of the day every plan is built around. Editable in Settings (see routineOf in planner.js).
+// Only the keys in ROUTINE_KEYS are used; the rest stay off (the planner still reads their times).
 const DEFAULT_ROUTINE = {
-  wake:      { label: 'Wake up',         on: true, dur: 15, title: 'Wake up, drink a glass of water, open the curtains' },
-  morning:   { label: 'Morning routine', on: true, dur: 30, title: 'Morning routine — shower, get dressed, make the bed' },
-  breakfast: { label: 'Breakfast',       on: true, dur: 20, title: 'Breakfast' },
-  lunch:     { label: 'Lunch',           on: true, dur: 40, title: 'Lunch — step away from the screen', time: '12:30' },
-  dinner:    { label: 'Dinner',          on: true, dur: 40, title: 'Dinner', time: '19:00' },
-  exercise:  { label: 'Exercise',        on: true, dur: 30, title: 'Move your body — walk, workout or stretch' },
-  review:    { label: 'Evening review',  on: true, dur: 10, title: "Review today & check tomorrow's plan" },
-  winddown:  { label: 'Wind down',       on: true, dur: 45, title: 'Wind down — no screens, read or stretch' },
+  wake:      { label: 'Wake up',         on: true,  dur: 15, title: 'Wake up, drink a glass of water, open the curtains' },
+  morning:   { label: 'Morning routine', on: false, dur: 30, title: 'Morning routine — shower, get dressed, make the bed' },
+  breakfast: { label: 'Breakfast',       on: false, dur: 20, title: 'Breakfast' },
+  lunch:     { label: 'Lunch',           on: false, dur: 40, title: 'Lunch — step away from the screen', time: '12:30' },
+  dinner:    { label: 'Dinner',          on: false, dur: 40, title: 'Dinner', time: '19:00' },
+  exercise:  { label: 'Exercise',        on: true,  dur: 30, title: 'Move your body — walk, workout or stretch' },
+  review:    { label: 'Evening review',  on: false, dur: 10, title: "Review today & check tomorrow's plan" },
+  winddown:  { label: 'Wind down',       on: false, dur: 45, title: 'Wind down — no screens, read or stretch' },
 };
+// the routine blocks a plan can include (and that Settings shows)
+const ROUTINE_KEYS = ['wake', 'exercise'];
 
 const CATEGORIES = {
   work:     { label: 'Work',     icon: '💼' },

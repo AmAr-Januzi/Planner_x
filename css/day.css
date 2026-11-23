@@ -129,6 +129,7 @@
   border-top: 1px solid var(--line);
 }
 .t-anytime { --type: var(--accent-2); }
+.t-anytime .time { color: var(--accent); }
 
 /* ---------- Top priorities ---------- */
 .top-card { position: relative; overflow: hidden; }

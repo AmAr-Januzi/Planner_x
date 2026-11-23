@@ -455,6 +455,7 @@ function timeline(k, day, isFuture) {
       <button class="skipb" data-act="mark" data-id="${b.id}" data-s="skipped" ${isFuture ? 'disabled' : 'title="Didn\'t do it"'} aria-label="Mark skipped">✕</button>`;
     return `
     <div class="block t-${b.type} ${b.type === 'free' ? 'free' : ''} ${b.status === 'done' ? 'done' : ''} ${b.status === 'skipped' ? 'skipped' : ''} ${b.clash ? 'clash' : ''}" data-id="${b.id}" ${anytime ? '' : `data-start="${b.start}" data-end="${b.end}"`} data-status="${b.status}">
+      <div class="time">${anytime ? '📌 Anytime' : `${fmt(b.start)}–${fmt(b.end)}`}</div>
       <div><div class="b-title">${esc(b.title)}</div><div class="b-sub">${esc(sub)}${anytime && pr ? ` · ~${hours(pr.duration)}` : anytime ? '' : ` · ${hours(b.end - b.start)}`}</div></div>
       <div class="b-actions">${actions}</div>
     </div>`;

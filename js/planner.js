@@ -6,8 +6,11 @@
 
 const isWeekend = k => [0, 6].includes(dateOf(k).getDay());
 
-// the saved routine on top of the defaults, so older saves and new options keep working
-const routineOf = p => Object.fromEntries(Object.keys(DEFAULT_ROUTINE).map(key => [key, { ...DEFAULT_ROUTINE[key], ...p?.routine?.[key] }]));
+// the saved routine on top of the defaults, so older saves and new options keep working;
+// anything outside ROUTINE_KEYS is always off, even if an older save turned it on
+const routineOf = p => Object.fromEntries(Object.keys(DEFAULT_ROUTINE).map(key => [key, {
+  ...DEFAULT_ROUTINE[key], ...p?.routine?.[key], ...(ROUTINE_KEYS.includes(key) ? {} : { on: false }),
+}]));
 
 function dayBounds(k = todayKey()) {
   const p = state.profile;

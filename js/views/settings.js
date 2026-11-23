@@ -48,7 +48,7 @@ function routineFields(p) {
   <details class="routine-box">
     <summary>Customize your daily routine</summary>
     <p class="muted small">Untick anything you don't want in your plans, and rename it or change how long it takes. Exercise is only added on days with no health activity.</p>
-    ${Object.entries(R).map(([key, r]) => `
+    ${Object.entries(R).filter(([key]) => ROUTINE_KEYS.includes(key)).map(([key, r]) => `
     <div class="routine-row">
       <label class="routine-on"><input type="checkbox" name="rOn_${key}" ${r.on ? 'checked' : ''}> ${esc(DEFAULT_ROUTINE[key].label)}</label>
       <input class="${r.time ? '' : 'routine-wide'}" name="rTitle_${key}" maxlength="60" value="${esc(r.title)}" aria-label="${esc(DEFAULT_ROUTINE[key].label)} — name in your plan">
