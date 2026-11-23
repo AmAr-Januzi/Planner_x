@@ -259,12 +259,6 @@ document.addEventListener('click', e => {
       break;
     case 'closeModal': closeModal(); return;
 
-    case 'mode': {
-      const order = ['auto', 'light', 'dark'];
-      state.mode = order[(order.indexOf(state.mode || 'auto') + 1) % order.length];
-      save(); toast(`${MODES[state.mode].icon} ${MODES[state.mode].label} mode`);
-      break;
-    }
     case 'setMode': state.mode = t.dataset.m; save(); break;
     case 'theme': state.theme = +t.dataset.i; save(); toast(`${THEMES[state.theme].icon} ${THEMES[state.theme].name} theme`); break;
     case 'export':

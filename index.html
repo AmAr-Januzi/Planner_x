@@ -44,10 +44,8 @@
     <nav class="subnav" id="dayNav" aria-label="Day sections" hidden></nav>
 
     <div class="level" id="levelBox"></div>
-    <div class="side-actions">
-      <button class="mode-btn set-btn" id="setBtn" data-act="view" data-view="settings" aria-label="Settings" title="Settings">⚙️</button>
-      <button class="mode-btn" id="modeBtn" data-act="mode" aria-label="Switch light / dark mode"></button>
-    </div>
+    <!-- Settings: bottom of the sidebar, stays put when the sidebar scrolls (light/dark mode is chosen in Settings) -->
+    <button class="set-btn" id="setBtn" data-act="view" data-view="settings" aria-label="Settings"><span class="tab-ic" aria-hidden="true">⚙️</span><span class="tab-tx">Settings</span></button>
   </header>
 
   <main id="view"></main>

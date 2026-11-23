@@ -36,9 +36,4 @@ function applyTheme() {
   if (t.bg) s.setProperty('--theme-bg', t.bg); else s.removeProperty('--theme-bg');
   const mode = state.mode || 'auto';
   if (mode === 'auto') delete root.dataset.mode; else root.dataset.mode = mode;
-  const btn = $('#modeBtn');
-  if (btn) {
-    btn.textContent = MODES[mode].icon;
-    btn.title = `${MODES[mode].label} mode — click to switch`;
-  }
 }

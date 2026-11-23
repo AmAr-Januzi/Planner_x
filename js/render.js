@@ -98,7 +98,7 @@ function applySide() {
     btn.dataset.tip = label;
   }
   // with only icons showing, hovering a page button shows its name
-  for (const b of $$('#tabs > button')) b.dataset.tip = mini ? b.querySelector('.tab-tx')?.textContent || '' : '';
+  for (const b of $$('#tabs > button, #setBtn')) b.dataset.tip = mini ? b.querySelector('.tab-tx')?.textContent || '' : '';
 }
 
 function renderLevel() {
