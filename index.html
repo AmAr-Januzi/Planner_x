@@ -39,13 +39,15 @@
       <button data-act="view" data-view="month"><span class="tab-ic" aria-hidden="true">📅</span><span class="tab-tx">Month</span></button>
       <button data-act="view" data-view="year"><span class="tab-ic" aria-hidden="true">🌟</span><span class="tab-tx">Year</span></button>
       <button data-act="view" data-view="stats"><span class="tab-ic" aria-hidden="true">📊</span><span class="tab-tx">Stats</span></button>
-      <button data-act="view" data-view="settings"><span class="tab-ic" aria-hidden="true">⚙️</span><span class="tab-tx">Settings</span></button>
     </nav>
 
     <nav class="subnav" id="dayNav" aria-label="Day sections" hidden></nav>
 
     <div class="level" id="levelBox"></div>
-    <button class="mode-btn" id="modeBtn" data-act="mode" aria-label="Switch light / dark mode"></button>
+    <div class="side-actions">
+      <button class="mode-btn set-btn" id="setBtn" data-act="view" data-view="settings" aria-label="Settings" title="Settings">⚙️</button>
+      <button class="mode-btn" id="modeBtn" data-act="mode" aria-label="Switch light / dark mode"></button>
+    </div>
   </header>
 
   <main id="view"></main>

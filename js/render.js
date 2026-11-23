@@ -7,7 +7,7 @@
 function render() {
   hideTip();
   applyTheme();
-  $$('#tabs > button').forEach(b => {
+  $$('#tabs > button, #setBtn').forEach(b => {
     b.classList.toggle('active', b.dataset.view === ui.view);
     if (b.dataset.view === ui.view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
