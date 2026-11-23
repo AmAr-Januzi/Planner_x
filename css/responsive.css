@@ -207,7 +207,7 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
     align-items: stretch;
     flex-wrap: nowrap;
     gap: 22px;
-    padding: 22px 16px;
+    padding: 22px 16px 84px; /* bottom: room for the pinned Settings button */
     border-bottom: none;
     border-right: 1px solid var(--line);
     background: var(--card);
@@ -269,12 +269,15 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
   .level-text { white-space: normal; }
   .levelup-btn { width: 100%; }
 
-  /* Settings: full-width button at the very bottom, sticky so it stays visible when the sidebar scrolls */
+  /* Settings: pinned to the bottom of the sidebar — it never moves, even when the sidebar scrolls.
+     The card-colored ring hides sidebar content scrolling underneath it. */
   .set-btn {
-    order: 3;
-    position: sticky;
-    bottom: 0;
-    width: 100%;
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 1;
+    width: calc(var(--side-w) - 32px);
+    box-shadow: 0 0 0 14px var(--card);
     margin: 0;
     padding: 11px 14px;
     border-radius: 12px;
@@ -283,6 +286,7 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
     text-align: left;
     background: var(--card);
   }
+  html:not(.preload) .set-btn { transition: width .2s, left .2s; }
 
   /* page content sits to the right of the sidebar */
   /* centered in the space right of the sidebar once the screen is wider than the page */
@@ -311,7 +315,7 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
 
   /* collapsed: the same icon-only sidebar as on in-between widths */
   html.side-mini { --side-w: 76px; }
-  html.side-mini .topbar { padding: 18px 10px; gap: 16px; align-items: center; }
+  html.side-mini .topbar { padding: 18px 10px 78px; gap: 16px; align-items: center; }
   html.side-mini .brand { padding: 0; flex-direction: column; gap: 10px; }
   html.side-mini .side-toggle { margin-left: 0; }
   html.side-mini .brand-name, html.side-mini .tab-tx, html.side-mini .sub-tx { display: none; }
@@ -322,7 +326,7 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
   html.side-mini .level > .level-chip, html.side-mini .level > .rank { align-self: center; }
   html.side-mini .level .rank, html.side-mini .level-text { display: none; }
   html.side-mini .levelup-btn { padding: 6px 2px; font-size: 11px; }
-  html.side-mini .set-btn { justify-content: center; padding: 12px 0; }
+  html.side-mini .set-btn { justify-content: center; padding: 12px 0; left: 10px; bottom: 12px; width: calc(var(--side-w) - 20px); box-shadow: 0 0 0 9px var(--card); }
   html.side-mini .subnav { margin: 2px 0 8px; padding: 6px 0; border-left: none; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); width: 100%; }
   html.side-mini .subnav button { justify-content: center; padding: 9px 0; position: relative; }
   html.side-mini .sub-ic { font-size: 17px; }
@@ -332,7 +336,7 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
 /* in-between widths: icon-only sidebar so the page keeps its room */
 @media (min-width: 641px) and (max-width: 1000px) {
   :root { --side-w: 76px; }
-  .topbar { padding: 18px 10px; gap: 16px; align-items: center; }
+  .topbar { padding: 18px 10px 78px; gap: 16px; align-items: center; }
   .brand { padding: 0; }
   .brand-name, .tab-tx { display: none; }
   .tabs { width: 100%; }
@@ -343,7 +347,7 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
   .level .rank { display: none; }
   .levelup-btn { padding: 6px 2px; font-size: 11px; }
   .level-text { display: none; }
-  .set-btn { justify-content: center; padding: 12px 0; }
+  .set-btn { justify-content: center; padding: 12px 0; left: 10px; bottom: 12px; width: calc(var(--side-w) - 20px); box-shadow: 0 0 0 9px var(--card); }
   main { padding-left: 18px; padding-right: 18px; }
 }
 
