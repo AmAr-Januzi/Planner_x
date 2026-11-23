@@ -22,12 +22,15 @@
   <link rel="stylesheet" href="css/effects.css">
   <link rel="stylesheet" href="css/stats.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <!-- apply the collapsed sidebar before the first paint, so it doesn't jump open then shut -->
+  <script>try { if (localStorage.getItem('plannerx-side') === 'mini') document.documentElement.classList.add('side-mini'); } catch (e) {}</script>
 </head>
 <body>
   <header class="topbar" aria-label="Main menu">
     <div class="brand">
       <span class="logo">X</span>
       <span class="brand-name">Planner X</span>
+      <button class="side-toggle" id="sideToggle" data-act="sideToggle" aria-controls="tabs" aria-label="Collapse sidebar">«</button>
     </div>
 
     <nav class="tabs" id="tabs">

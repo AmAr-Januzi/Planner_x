@@ -26,6 +26,10 @@ document.addEventListener('click', e => {
       try { localStorage.setItem('plannerx-daySection', ui.daySection); } catch {}
       render(); window.scrollTo({ top: 0 });
       return;
+    case 'sideToggle':
+      try { localStorage.setItem('plannerx-side', document.documentElement.classList.contains('side-mini') ? 'full' : 'mini'); } catch {}
+      applySide();
+      return;
     case 'today': ui.date = todayKey(); break;
     case 'shift': ui.date = addDays(ui.date, +t.dataset.n); ui.editing = ui.editingHabit = null; break;
     case 'statsRange': ui.statsRange = +t.dataset.n; break;

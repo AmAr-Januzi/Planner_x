@@ -212,7 +212,9 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     overflow-y: auto;
+    overflow-x: hidden; /* scrolls up and down only, never sideways */
   }
+  html:not(.preload) .topbar { transition: width .2s, padding .2s; }
   .topbar::after { left: auto; top: 0; right: -1px; bottom: 0; width: 2px; height: auto; }
 
   .brand { order: 0; padding: 0 6px; }
@@ -271,6 +273,45 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
   /* centered in the space right of the sidebar once the screen is wider than the page */
   main { margin-left: max(var(--side-w), calc(50% + var(--side-w) / 2 - 640px)); margin-right: auto; padding-left: 28px; padding-right: 28px; }
   html:not(.preload) main { transition: margin-left .2s; }
+}
+
+/* collapse button: only where the sidebar has room for names (it is icon-only below 1001px anyway) */
+.side-toggle { display: none; }
+@media (min-width: 1001px) {
+  .side-toggle {
+    display: grid;
+    place-items: center;
+    width: 28px; height: 28px;
+    margin-left: auto;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1;
+    flex: none;
+  }
+  .side-toggle:hover { background: var(--soft); color: var(--text); }
+
+  /* collapsed: the same icon-only sidebar as on in-between widths */
+  html.side-mini { --side-w: 76px; }
+  html.side-mini .topbar { padding: 18px 10px; gap: 16px; align-items: center; }
+  html.side-mini .brand { padding: 0; flex-direction: column; gap: 10px; }
+  html.side-mini .side-toggle { margin-left: 0; }
+  html.side-mini .brand-name, html.side-mini .tab-tx, html.side-mini .sub-tx { display: none; }
+  html.side-mini .tabs { width: 100%; }
+  html.side-mini .tabs button { justify-content: center; padding: 12px 0; }
+  html.side-mini .tab-ic { font-size: 20px; }
+  html.side-mini .level { width: 100%; padding: 8px 4px; align-items: center; background: transparent; }
+  html.side-mini .level > .level-chip, html.side-mini .level > .rank { align-self: center; }
+  html.side-mini .level .rank, html.side-mini .level-text { display: none; }
+  html.side-mini .levelup-btn { padding: 6px 2px; font-size: 11px; }
+  html.side-mini .mode-btn { align-self: center; }
+  html.side-mini .subnav { margin: 2px 0 8px; padding: 6px 0; border-left: none; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); width: 100%; }
+  html.side-mini .subnav button { justify-content: center; padding: 9px 0; position: relative; }
+  html.side-mini .sub-ic { font-size: 17px; }
+  html.side-mini .sub-n { position: absolute; top: 2px; right: 6px; min-width: 16px; padding: 0 4px; font-size: 10px; }
 }
 
 /* in-between widths: icon-only sidebar so the page keeps its room */

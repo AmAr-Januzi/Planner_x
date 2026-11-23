@@ -84,6 +84,23 @@ function scrollPlanToNow(box) {
   box.scrollTop = Math.max(0, target.offsetTop - 70); // .plan-scroll is position:relative
 }
 
+// sidebar collapsed to icons only (wide screens); the choice is kept in this browser
+function applySide() {
+  let mini = false;
+  try { mini = localStorage.getItem('plannerx-side') === 'mini'; } catch {}
+  document.documentElement.classList.toggle('side-mini', mini);
+  const btn = $('#sideToggle');
+  if (btn) {
+    const label = mini ? 'Expand sidebar' : 'Collapse sidebar';
+    btn.textContent = mini ? '»' : '«';
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('aria-expanded', String(!mini));
+    btn.dataset.tip = label;
+  }
+  // with only icons showing, hovering a page button shows its name
+  for (const b of $$('#tabs > button')) b.dataset.tip = mini ? b.querySelector('.tab-tx')?.textContent || '' : '';
+}
+
 function renderLevel() {
   const total = totalPoints();
   const cur = levelInfo(state.level), next = levelInfo(state.level + 1);

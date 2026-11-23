@@ -4,6 +4,7 @@
 
 /* ---------------- start ---------------- */
 
+applySide();
 ui.date = todayKey();
 ensureToday();
 render();
