@@ -54,10 +54,8 @@ button:not(:disabled):active { transform: scale(.96); }
   .brand:hover .logo { transform: rotate(-8deg) scale(1.08); }
   .logo { transition: transform .35s cubic-bezier(.2, .9, .3, 1.4); }
 
-  /* Settings button: the gear turns on hover */
-  .set-btn:not(.active):hover { background: var(--soft); color: var(--text); }
-  .set-btn .tab-ic { transition: transform .35s; }
-  .set-btn:hover .tab-ic { transform: rotate(45deg); }
+  /* Settings button: same hover as the page buttons */
+  .set-btn:not(.active):hover { color: var(--text); background: color-mix(in srgb, var(--card) 60%, transparent); }
 
   /* cards lift with a soft theme glow */
   .card:hover {

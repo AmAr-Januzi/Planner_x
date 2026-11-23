@@ -51,7 +51,7 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
   .brand { font-size: 16px; }
   .logo { width: 30px; height: 30px; }
   /* phones: round gear button in the top bar */
-  .set-btn { width: 38px; height: 38px; padding: 0; border-radius: 50%; justify-content: center; }
+  .set-btn { width: 38px; height: 38px; padding: 0; border-radius: 50%; justify-content: center; border: 1px solid var(--line); }
   .set-btn .tab-tx { display: none; }
   .level { gap: 8px; flex-wrap: wrap; }
   .level-chip { font-size: 12px; }
@@ -279,8 +279,19 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
     font-size: 15px;
     justify-content: flex-start;
     text-align: left;
-    background: var(--card);
   }
+  /* same gradient marker on the left as the page buttons */
+  .set-btn::after {
+    content: "";
+    position: absolute;
+    left: 0; top: 25%; bottom: 25%;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--grad);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .set-btn.active::after { opacity: 1; }
 
   /* page content sits to the right of the sidebar */
   /* centered in the space right of the sidebar once the screen is wider than the page */
