@@ -113,7 +113,6 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
 
   /* plan */
   .block { grid-template-columns: 1fr auto; gap: 6px 10px; padding: 9px 10px; }
-  .block .time { grid-column: 1 / -1; }
   .check, .skipb { width: 36px; height: 36px; }
   .plan-scroll { max-height: 70vh; min-height: 260px; }
 
@@ -269,7 +268,8 @@ body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps 
   .mode-btn { order: 3; margin: 0; align-self: flex-start; }
 
   /* page content sits to the right of the sidebar */
-  main { margin-left: var(--side-w); padding-left: 28px; padding-right: 28px; }
+  /* centered in the space right of the sidebar once the screen is wider than the page */
+  main { margin-left: max(var(--side-w), calc(50% + var(--side-w) / 2 - 640px)); margin-right: auto; padding-left: 28px; padding-right: 28px; }
   html:not(.preload) main { transition: margin-left .2s; }
 }
 

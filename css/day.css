@@ -129,7 +129,6 @@
   border-top: 1px solid var(--line);
 }
 .t-anytime { --type: var(--accent-2); }
-.t-anytime .time { color: var(--accent); }
 
 /* ---------- Top priorities ---------- */
 .top-card { position: relative; overflow: hidden; }
@@ -212,7 +211,7 @@
 
 /* ---------- One section at a time ---------- */
 #view:has(.day-section) > .period-head,
-.day-section { max-width: 920px; }
+.day-section { max-width: 920px; margin-left: auto; margin-right: auto; }
 .day-section > .card:last-child { margin-bottom: 0; }
 .now-strip {
   margin: 0 0 18px;
