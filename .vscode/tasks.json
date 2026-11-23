@@ -1,0 +1,16 @@
+{
+    // Ctrl+Shift+B opens Planner X in your default browser, with your normal saved data.
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Open Planner X",
+            "type": "process",
+            "command": "powershell.exe",
+            "args": ["-NoProfile", "-Command", "Invoke-Item index.html"],
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": true },
+            "presentation": { "reveal": "silent", "close": true },
+            "problemMatcher": []
+        }
+    ]
+}

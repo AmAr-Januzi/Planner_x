@@ -1,0 +1,13 @@
+{
+    // F5 opens Planner X in a separate debug Chrome window (breakpoints work in VS Code).
+    // That window keeps its own data. To use your everyday Chrome, press Ctrl+Shift+B instead.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Run Planner X",
+            "file": "${workspaceFolder}/index.html"
+        }
+    ]
+}

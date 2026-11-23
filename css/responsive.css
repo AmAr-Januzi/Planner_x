@@ -1,0 +1,372 @@
+/* Planner X — Tablet and phone layouts. Loaded last so it wins over the other files. */
+
+/* =========================================================
+   Responsive layout — kept last so it wins over earlier rules
+   ========================================================= */
+
+.tabs button { display: inline-flex; align-items: center; gap: 6px; }
+.tab-ic { display: none; }
+body { overflow-x: clip; } /* "clip" (not "hidden") so the sticky top bar keeps working */
+
+/* ---------- small laptops ---------- */
+@media (max-width: 1180px) {
+  main { padding-left: 18px; padding-right: 18px; }
+  .topbar { gap: 14px; padding-left: 18px; padding-right: 18px; }
+  .level-bar { width: 140px; }
+}
+
+/* ---------- tablets ---------- */
+@media (max-width: 1000px) {
+  /* top bar: brand + mode on one row, tabs and level below */
+  .topbar { row-gap: 10px; }
+  .brand { order: 1; }
+  .mode-btn { order: 2; margin-left: auto; }
+  .tabs { order: 3; width: 100%; }
+  .tabs button { flex: 1; justify-content: center; }
+  .level { order: 4; width: 100%; margin-left: 0; }
+  .level-bar { flex: 1; width: auto; }
+
+
+  .plan-scroll { max-height: 65vh; }
+  .card-scroll.scroll-list { max-height: 70vh; }
+  .two-col { grid-template-columns: 1fr; }
+  .week-grid { grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); }
+  .year-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+  .themes { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+}
+
+/* ---------- phones ---------- */
+@media (max-width: 640px) {
+  body { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
+  main { padding: 16px 14px 24px; }
+
+  /* top bar — no backdrop blur here: it would trap the fixed bottom bar inside the top bar */
+  .topbar {
+    padding: 10px 14px;
+    gap: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--card);
+  }
+  .brand { font-size: 16px; }
+  .logo { width: 30px; height: 30px; }
+  .mode-btn { width: 34px; height: 34px; font-size: 15px; }
+  .level { gap: 8px; flex-wrap: wrap; }
+  .level-chip { font-size: 12px; }
+  .level-text { font-size: 11px; }
+  .levelup-btn { width: 100%; }
+
+  /* tabs become a bottom app bar */
+  .tabs {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 40;
+    width: auto;
+    margin: 0;
+    gap: 2px;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    border-radius: 18px 18px 0 0;
+    background: color-mix(in srgb, var(--card) 90%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -6px 24px rgba(20, 24, 50, .1);
+  }
+  .tabs button {
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 2px 5px;
+    font-size: 11px;
+    border-radius: 12px;
+  }
+  .tab-ic { display: block; font-size: 19px; line-height: 1.1; }
+  .tabs button.active { background: color-mix(in srgb, var(--accent) 12%, var(--card)); box-shadow: none; }
+  .tabs button::after { bottom: auto; top: 1px; }
+
+  /* page headers */
+  .period-head { gap: 6px; margin-bottom: 14px; }
+  .period-head h1 { flex: 1 1 0; min-width: 0; margin: 0 2px; font-size: 16px; text-align: center; }
+  .chips {
+    order: 10;
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { white-space: nowrap; }
+
+  /* cards */
+  .card { padding: 14px; border-radius: 14px; margin-bottom: 14px; }
+  .card h2 { font-size: 15px; flex-wrap: wrap; }
+  .card-head { flex-wrap: wrap; }
+  .coach { padding-left: 18px; }
+  .coach-greet { font-size: 16px; }
+  .msg { padding: 9px 10px; font-size: 14px; }
+
+  /* forms: 16px text stops phones from zooming in on focus */
+  input, select, textarea { font-size: 16px; }
+  .form-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .form-actions { flex-wrap: wrap; }
+
+  /* plan */
+  .block { grid-template-columns: 1fr auto; gap: 6px 10px; padding: 9px 10px; }
+  .block .time { grid-column: 1 / -1; }
+  .check, .skipb { width: 36px; height: 36px; }
+  .plan-scroll { max-height: 70vh; min-height: 260px; }
+
+  /* lists */
+  .prio { flex-wrap: wrap; }
+  .prio-main { flex: 1 1 calc(100% - 30px); }
+  .prio-actions { width: 100%; justify-content: flex-end; }
+  .top-list li { gap: 8px; padding: 8px; }
+  .top-when { font-size: 11px; padding: 3px 7px; }
+  .top-list .check, .top-list .skipb { width: 32px; height: 32px; }
+  .note-list li { flex-wrap: wrap; }
+  .note-main { flex: 1 1 calc(100% - 44px); }
+  .note-list li .btn-small { margin-left: auto; }
+  .note-list li .btn-small + .btn-small { margin-left: 0; }
+  .carry-list label { flex-wrap: wrap; }
+  .log-form { grid-template-columns: 1fr auto; }
+  .log-form input[type=time] { grid-column: 1 / -1; }
+
+  /* focus timer & achievements */
+  .focus-setup { grid-template-columns: 1fr; }
+  .focus-live { gap: 14px; }
+  .focus-ring { width: 108px; height: 108px; }
+  .focus-time { font-size: 23px; }
+  .focus-title { font-size: 16px; }
+  .ach-grid { grid-template-columns: 1fr; }
+  .ach-dot { width: 34px; height: 34px; font-size: 16px; }
+
+  /* week / month / year */
+  .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .wday { min-height: 150px; padding: 10px; }
+  .month-grid { gap: 3px; }
+  .month-grid .dow { font-size: 10px; padding: 2px; }
+  .mcell { aspect-ratio: auto; min-height: 48px; padding: 4px 5px; font-size: 11px; border-radius: 8px; }
+  .mcell .num { font-size: 12px; }
+  .mcell .pts-m { display: none; }
+  .year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ymonth { padding: 12px; }
+  .ymonth h3 { font-size: 14px; }
+
+  /* settings */
+  .themes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mode-pick button { min-width: 0; flex: 1 1 30%; padding: 8px 4px; font-size: 13px; }
+  .levels-table { font-size: 13px; }
+  .days-pick label { padding: 5px 7px; font-size: 13px; }
+  .row2:has(.row2) { grid-template-columns: 1fr; } /* "Name" + "Starts at / Hours" would be too cramped */
+
+  /* pop-ups open as a bottom sheet */
+  .modal-bg { place-items: end center; padding: 0; }
+  .modal {
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 22px 22px 0 0;
+    padding: 24px 18px calc(22px + env(safe-area-inset-bottom));
+    animation: sheetUp .3s cubic-bezier(.2, .9, .3, 1);
+  }
+  .dialog-actions button { flex: 1; min-width: 0; }
+  .levelup .big { font-size: 44px; }
+
+  /* toasts sit above the bottom bar */
+  .toasts { left: 14px; right: 14px; bottom: calc(86px + env(safe-area-inset-bottom)); align-items: center; }
+  .toast { text-align: center; }
+}
+@keyframes sheetUp { from { transform: translateY(40px); opacity: 0; } }
+
+/* ---------- small phones ---------- */
+@media (max-width: 360px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .week-grid { grid-template-columns: 1fr; }
+  .themes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tabs button { font-size: 10px; }
+  .tab-ic { font-size: 17px; }
+  .brand-name { display: none; }
+}
+
+/* =========================================================
+   Sidebar — on screens wider than a phone the top bar becomes
+   a fixed left sidebar: logo, pages, level and light/dark mode.
+   (Phones keep the top bar + bottom tab bar above.)
+   ========================================================= */
+@media (min-width: 641px) {
+  :root { --side-w: 232px; }
+
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: var(--side-w);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: 22px;
+    padding: 22px 16px;
+    border-bottom: none;
+    border-right: 1px solid var(--line);
+    background: var(--card);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    overflow-y: auto;
+  }
+  .topbar::after { left: auto; top: 0; right: -1px; bottom: 0; width: 2px; height: auto; }
+
+  .brand { order: 0; padding: 0 6px; }
+
+  /* pages: one per row, icon + name */
+  .tabs {
+    order: 1;
+    width: auto;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+  }
+  .tabs button {
+    flex: none;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 12px;
+    font-size: 15px;
+    text-align: left;
+  }
+  .tab-ic { display: inline-block; font-size: 18px; width: 22px; text-align: center; }
+  .tabs button.active {
+    background: color-mix(in srgb, var(--accent) 12%, var(--card));
+    color: var(--accent);
+    box-shadow: none;
+  }
+  /* gradient marker on the left instead of an underline */
+  .tabs button::after { left: 0; right: auto; top: 25%; bottom: 25%; width: 3px; height: auto; opacity: 0; transition: opacity .2s; }
+  .tabs button.active::after { left: 0; right: auto; opacity: 1; }
+  .tabs button:not(.active):hover::after { left: 0; right: auto; }
+
+  /* level box sits at the bottom, stacked */
+  .level {
+    order: 2;
+    margin: auto 0 0;
+    width: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 14px;
+    border-radius: 14px;
+    background: var(--soft);
+  }
+  .level > .level-chip, .level > .rank { align-self: flex-start; }
+  .level-bar { width: 100%; flex: none; }
+  .level-text { white-space: normal; }
+  .levelup-btn { width: 100%; }
+
+  .mode-btn { order: 3; margin: 0; align-self: flex-start; }
+
+  /* page content sits to the right of the sidebar */
+  main { margin-left: var(--side-w); padding-left: 28px; padding-right: 28px; }
+  html:not(.preload) main { transition: margin-left .2s; }
+}
+
+/* in-between widths: icon-only sidebar so the page keeps its room */
+@media (min-width: 641px) and (max-width: 1000px) {
+  :root { --side-w: 76px; }
+  .topbar { padding: 18px 10px; gap: 16px; align-items: center; }
+  .brand { padding: 0; }
+  .brand-name, .tab-tx { display: none; }
+  .tabs { width: 100%; }
+  .tabs button { justify-content: center; padding: 12px 0; }
+  .tab-ic { font-size: 20px; }
+  .level { width: 100%; padding: 8px 4px; align-items: center; background: transparent; }
+  .level > .level-chip, .level > .rank { align-self: center; }
+  .level .rank { display: none; }
+  .levelup-btn { padding: 6px 2px; font-size: 11px; }
+  .level-text { display: none; }
+  .mode-btn { align-self: center; }
+  main { padding-left: 18px; padding-right: 18px; }
+}
+
+/* =========================================================
+   Day sections menu (My day, Priorities, Notes…)
+   ========================================================= */
+.subnav[hidden] { display: none !important; }
+.subnav button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 500;
+}
+.subnav button.active { color: var(--accent); font-weight: 700; background: color-mix(in srgb, var(--accent) 9%, var(--card)); }
+.sub-ic { font-size: 15px; width: 20px; text-align: center; flex: none; }
+.sub-n {
+  margin-left: auto;
+  min-width: 20px;
+  padding: 1px 7px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  background: var(--soft);
+  color: var(--muted);
+}
+.subnav button.active .sub-n { background: var(--accent); color: #fff; }
+@media (hover: hover) and (pointer: fine) {
+  .subnav button:not(.active):hover { background: var(--soft); color: var(--text); }
+}
+
+/* sidebar: indented list under the pages */
+@media (min-width: 641px) {
+  .subnav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 2px 0 8px 24px;
+    padding-left: 10px;
+    border-left: 2px solid var(--line);
+  }
+  .subnav button { width: 100%; padding: 8px 10px; border-radius: 10px; font-size: 14px; text-align: left; }
+  .subnav button::after { display: none; }
+}
+@media (min-width: 641px) and (max-width: 1000px) {
+  .subnav { margin: 2px 0 8px; padding: 6px 0; border-left: none; border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); width: 100%; }
+  .subnav button { justify-content: center; padding: 9px 0; position: relative; }
+  .sub-tx { display: none; }
+  .sub-ic { font-size: 17px; }
+  .sub-n { position: absolute; top: 2px; right: 6px; min-width: 16px; padding: 0 4px; font-size: 10px; }
+}
+
+/* phones: a scrollable row of chips under the top bar */
+@media (max-width: 640px) {
+  .subnav {
+    order: 5;
+    width: 100%;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 2px -14px -2px;
+    padding: 2px 14px 4px;
+    width: calc(100% + 28px);
+  }
+  .subnav::-webkit-scrollbar { display: none; }
+  .subnav button {
+    flex: none;
+    gap: 6px;
+    padding: 7px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--line);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .subnav button.active { border-color: var(--accent); }
+  .sub-ic { width: auto; font-size: 14px; }
+  .sub-n { margin-left: 2px; }
+}

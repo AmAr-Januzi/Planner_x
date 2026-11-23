@@ -1,0 +1,150 @@
+/* Planner X — Hover effects and animations (only with a real mouse), reduced motion. */
+
+/* =========================================================
+   Hover & interaction — only on devices with a real pointer
+   ========================================================= */
+
+.card, .wday, .mcell, .prio, .block, .goal-list li, .carry-list label, .theme-card, .msg, .chip, .log-list li {
+  transition: transform .25s cubic-bezier(.2, .8, .3, 1), box-shadow .25s, border-color .25s, background-color .25s;
+}
+input, select, textarea { transition: border-color .2s, box-shadow .2s, background-color .2s; }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--card);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+/* tabs: animated gradient underline */
+.tabs button { position: relative; }
+.tabs button::after {
+  content: "";
+  position: absolute;
+  left: 50%; right: 50%; bottom: 3px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--grad);
+  transition: left .25s, right .25s;
+}
+.tabs button.active::after { left: 14px; right: 14px; }
+
+/* press feedback everywhere */
+button:not(:disabled):active { transform: scale(.96); }
+
+@media (hover: hover) and (pointer: fine) {
+  /* buttons */
+  button:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
+  .btn-primary:not(:disabled):hover, .btn-danger:not(:disabled):hover {
+    color: #fff;
+    border-color: transparent;
+    filter: brightness(1.08) saturate(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .btn-danger:not(:disabled):hover { box-shadow: 0 10px 24px rgba(220, 38, 38, .45); }
+  .btn-ghost:not(:disabled):hover { background: var(--soft); border-color: transparent; color: var(--text); }
+  .btn-primary:not(:disabled):active, .btn-danger:not(:disabled):active { transform: translateY(0) scale(.97); }
+
+  /* tabs */
+  .tabs button:not(.active):hover { color: var(--text); background: color-mix(in srgb, var(--card) 60%, transparent); border-color: transparent; }
+  .tabs button:not(.active):hover::after { left: 30%; right: 30%; }
+
+  /* logo */
+  .brand { cursor: default; }
+  .brand:hover .logo { transform: rotate(-8deg) scale(1.08); }
+  .logo { transition: transform .35s cubic-bezier(.2, .9, .3, 1.4); }
+
+  /* light-mode / dark-mode toggle */
+  .mode-btn:hover { transform: rotate(20deg) scale(1.08); background: var(--soft); }
+
+  /* cards lift with a soft theme glow */
+  .card:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
+    box-shadow: 0 2px 4px rgba(20, 24, 50, .04), 0 14px 34px color-mix(in srgb, var(--accent) 12%, rgba(20, 24, 50, .08));
+  }
+
+  /* clickable cards (week days, months) lift higher */
+  .wday:hover, .ymonth:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 16px 36px color-mix(in srgb, var(--accent) 20%, rgba(20, 24, 50, .1));
+  }
+  .mcell:hover {
+    transform: translateY(-2px) scale(1.04);
+    border-color: var(--accent);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 25%, transparent);
+    z-index: 1;
+    position: relative;
+  }
+
+  /* list rows slide a little and get a tinted background */
+  .prio:hover, .goal-list li:hover, .carry-list label:hover {
+    transform: translateX(3px);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+    background: color-mix(in srgb, var(--accent) 4%, var(--card));
+  }
+  .log-list li:hover { background: var(--soft); }
+  .msg:hover { transform: translateX(3px); background: color-mix(in srgb, var(--accent) 7%, var(--soft)); }
+
+  /* plan blocks */
+  .block:not(.free):hover {
+    transform: translateX(4px);
+    border-color: color-mix(in srgb, var(--type) 60%, var(--line));
+    border-left-color: var(--type);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 12%, rgba(20, 24, 50, .06));
+  }
+  .block.free:hover { border-color: var(--muted); }
+
+  /* tick / skip buttons pop */
+  .check:not(:disabled):hover {
+    transform: scale(1.12);
+    border-color: var(--done);
+    color: var(--done);
+    background: var(--done-bg);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--done) 30%, transparent);
+  }
+  .skipb:not(:disabled):hover {
+    transform: scale(1.12);
+    border-color: var(--skip);
+    color: var(--skip);
+    background: var(--skip-bg);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--skip) 30%, transparent);
+  }
+  .block.done .check:hover, .goal-list li.done .check:hover, .habit-row.done .check:hover { background: var(--done); color: #fff; }
+  .block.skipped .skipb:hover { background: var(--skip); color: #fff; }
+
+  /* theme picker */
+  .theme-card:not(:disabled):hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 12px 26px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  .theme-card:not(:disabled):hover .theme-dot { transform: scale(1.1) rotate(8deg); }
+  .theme-dot { transition: transform .3s cubic-bezier(.2, .9, .3, 1.4); }
+
+  /* chips */
+  .chip:hover { transform: translateY(-1px); border-color: var(--accent); }
+
+  /* level bar: a light sweep runs across it */
+  .level:hover .bar > span::after, .wday:hover .bar > span::after, .ymonth:hover .bar > span::after {
+    animation: sweep 1.3s ease-in-out infinite;
+  }
+}
+
+.bar > span { position: relative; overflow: hidden; }
+.bar > span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55), transparent);
+  transform: translateX(-100%);
+}
+@keyframes sweep { to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

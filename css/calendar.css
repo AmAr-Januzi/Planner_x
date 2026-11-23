@@ -1,0 +1,65 @@
+/* Planner X — Week, Month and Year pages, and goals. */
+
+/* ---------- Week ---------- */
+.week-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+.wday {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  cursor: pointer;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wday:hover { border-color: var(--accent); }
+.wday.today { box-shadow: 0 0 0 2px var(--accent); }
+.wday-head { display: flex; justify-content: space-between; font-weight: 700; }
+.wday ul { list-style: none; padding: 0; margin: 0; font-size: 12px; display: flex; flex-direction: column; gap: 3px; max-height: 150px; overflow-y: auto; overscroll-behavior: contain; }
+.wday ul::-webkit-scrollbar { width: 6px; }
+.wday ul::-webkit-scrollbar-track { background: transparent; }
+.wday ul::-webkit-scrollbar-thumb { border: 1px solid var(--card); }
+.wday li { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wday li.done { color: var(--muted); text-decoration: line-through; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+
+/* ---------- Goals ---------- */
+.goal-form { display: flex; gap: 8px; }
+.goal-list { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-list li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; }
+.goal-list li span { flex: 1; }
+.goal-list li.done .goal-text { text-decoration: line-through; color: var(--muted); }
+.goal-list li.done .check { background: var(--done); border-color: var(--done); color: #fff; }
+
+/* ---------- Month ---------- */
+.month-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.month-grid .dow { text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); padding: 4px; }
+.mcell {
+  aspect-ratio: 1.15;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  padding: 7px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--card);
+  font-size: 12px;
+}
+.mcell:hover { border-color: var(--accent); }
+.mcell.blank { visibility: hidden; }
+.mcell.today { box-shadow: 0 0 0 2px var(--accent); }
+.mcell .num { font-weight: 700; font-size: 14px; }
+.legend { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); margin-top: 12px; }
+.legend i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+
+/* ---------- Year ---------- */
+.year-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+.ymonth { cursor: pointer; margin: 0; }
+.ymonth:hover { border-color: var(--accent); }
+.ymonth h3 { margin: 0 0 8px; font-size: 15px; }
+.ymonth.current { box-shadow: 0 0 0 2px var(--accent); }
+.mini-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-top: 10px; }
+.mini-days i { aspect-ratio: 1; border-radius: 2px; background: var(--soft); }

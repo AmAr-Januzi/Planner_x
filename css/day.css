@@ -1,0 +1,223 @@
+/* Planner X — Day page: coach, priorities, carry-over, plan panel, lists, top priorities. */
+
+/* ---------- Coach ---------- */
+.coach { position: relative; overflow: hidden; padding-left: 22px; }
+.coach::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: var(--grad);
+}
+.coach-greet { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.msgs { display: flex; flex-direction: column; gap: 9px; margin-top: 12px; }
+.msg { display: flex; gap: 10px; align-items: flex-start; background: var(--soft); padding: 10px 12px; border-radius: 10px; }
+.tag {
+  flex: none;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  padding: 3px 7px;
+  border-radius: 6px;
+  margin-top: 2px;
+  color: #fff;
+}
+.tag-do { background: var(--grad); }
+.tag-change { background: var(--warn); }
+.tag-tip { background: #0891b2; }
+.tag-win { background: var(--done); }
+.now-card { margin-top: 12px; padding: 12px; border-radius: 10px; border: 1px dashed var(--accent); }
+.quote { margin-top: 12px; font-style: italic; color: var(--muted); font-size: 14px; }
+
+/* ---------- Priorities ---------- */
+.form-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.form-grid .full { grid-column: 1 / -1; }
+.form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+
+.prio-list { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 6px; }
+.prio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.prio.done .prio-title { text-decoration: line-through; color: var(--muted); }
+.prio-title { font-weight: 600; }
+.prio-meta { font-size: 12px; color: var(--muted); }
+.prio-main { flex: 1; min-width: 0; }
+.prio-actions { display: flex; gap: 4px; }
+.imp { width: 8px; align-self: stretch; border-radius: 4px; flex: none; }
+.imp-high { background: #ef4444; }
+.imp-medium { background: #f59e0b; }
+.imp-low { background: #22c55e; }
+.overflow-note { color: var(--warn); font-size: 12px; font-weight: 600; }
+
+.lock-note {
+  background: var(--soft);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+/* ---------- Carry over ---------- */
+.carry { border-left: 4px solid var(--warn); }
+.carry-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.carry-list label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+}
+.carry-list input { width: auto; }
+.carry-list .imp { align-self: stretch; }
+
+/* ---------- Plan scroll panel ---------- */
+.plan-scroll {
+  position: relative;
+  max-height: calc(100vh - 230px);
+  min-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0 -10px;
+  padding: 10px 10px 6px;
+  /* soft fade at the top and bottom edges */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+}
+.plan-scroll::-webkit-scrollbar { width: 10px; }
+.plan-scroll::-webkit-scrollbar-track { background: transparent; }
+.plan-scroll::-webkit-scrollbar-thumb { border-color: var(--card); }
+
+/* ---------- Scrollable lists (priorities, goals, notes, log…) ---------- */
+.scroll-list {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: 2px 8px 2px 2px; /* room for the hover slide and the scrollbar */
+  margin-right: -8px;
+  /* scroll shadows: the two "local" covers move with the content and hide the
+     theme-colored shadows when you're already at the top / bottom */
+  background:
+    linear-gradient(var(--card) 30%, transparent) center top / 100% 28px no-repeat local,
+    linear-gradient(transparent, var(--card) 70%) center bottom / 100% 28px no-repeat local,
+    radial-gradient(farthest-side at 50% 0, color-mix(in srgb, var(--accent) 22%, transparent), transparent) center top / 100% 12px no-repeat scroll,
+    radial-gradient(farthest-side at 50% 100%, color-mix(in srgb, var(--accent) 22%, transparent), transparent) center bottom / 100% 12px no-repeat scroll;
+}
+.scroll-list::-webkit-scrollbar { width: 8px; }
+.scroll-list::-webkit-scrollbar-track { background: transparent; }
+.scroll-list::-webkit-scrollbar-thumb { border: 2px solid var(--card); }
+.carry-list.scroll-list { max-height: 260px; }
+/* a whole card body that scrolls under its fixed title (🎯 Priorities) */
+.card-scroll.scroll-list { max-height: min(560px, calc(100vh - 200px)); padding-top: 4px; padding-bottom: 4px; }
+.log-list.scroll-list { max-height: 240px; }
+
+/* ---------- Anytime list (bottom of the plan) ---------- */
+.anytime-head {
+  font-weight: 700;
+  font-size: 14px;
+  margin: 14px 0 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.t-anytime { --type: var(--accent-2); }
+.t-anytime .time { color: var(--accent); }
+
+/* ---------- Top priorities ---------- */
+.top-card { position: relative; overflow: hidden; }
+.top-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--grad);
+}
+.top-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.top-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  transition: transform .25s cubic-bezier(.2, .8, .3, 1), border-color .25s, background-color .25s;
+}
+.top-list li.done { opacity: .6; }
+.top-list li.done .top-title { text-decoration: line-through; }
+.top-list li.done .check { background: var(--done); border-color: var(--done); color: #fff; }
+.top-rank {
+  width: 26px; height: 26px;
+  flex: none;
+  display: grid; place-items: center;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+}
+.imp-bg-high { background: linear-gradient(135deg, #ef4444, #f97316); }
+.imp-bg-medium { background: linear-gradient(135deg, #f59e0b, #eab308); }
+.imp-bg-low { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.top-main { flex: 1; min-width: 0; }
+.top-title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-meta { font-size: 12px; color: var(--muted); }
+.top-when {
+  flex: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: var(--soft);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.top-when.now { background: var(--accent); color: #fff; animation: pulse 1.6s infinite; }
+.top-when.soon { background: color-mix(in srgb, var(--accent-2) 25%, var(--card)); color: var(--accent); }
+.top-when.late { background: var(--skip-bg); color: var(--skip); }
+.top-when.done { background: var(--done-bg); color: var(--done); }
+.top-list .check, .top-list .skipb { width: 30px; height: 30px; flex: none; }
+.top-list li.skipped { opacity: .6; }
+.top-list li.skipped .top-title { color: var(--muted); }
+.top-list li.skipped .skipb { background: var(--skip); border-color: var(--skip); color: #fff; }
+.top-list li.skipped:hover .skipb { background: var(--skip); color: #fff; }
+.top-list .top-del { flex: none; padding: 4px 8px; }
+
+.top-coming { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.top-coming-head { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+.top-coming-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  padding: 5px 6px;
+  font-size: 13px;
+}
+.top-coming-item .imp { width: 4px; height: 16px; }
+.tc-day { font-weight: 700; color: var(--accent); min-width: 54px; }
+.tc-title { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (hover: hover) and (pointer: fine) {
+  .top-list li:hover { transform: translateX(3px); border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); background: color-mix(in srgb, var(--accent) 4%, var(--card)); }
+  .top-coming-item:hover { background: var(--soft); color: var(--text); }
+}
+
+/* ---------- One section at a time ---------- */
+#view:has(.day-section) > .period-head,
+.day-section { max-width: 920px; }
+.day-section > .card:last-child { margin-bottom: 0; }
+.now-strip {
+  margin: 0 0 18px;
+  background: var(--card);
+  border-radius: var(--radius);
+  font-size: 15px;
+  line-height: 1.55;
+}
