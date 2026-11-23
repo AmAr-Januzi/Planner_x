@@ -6,6 +6,7 @@
 
 applySide();
 ui.date = todayKey();
+dropRemovedRoutine(); // saved before ensureToday() below
 ensureToday();
 render();
 if (damagedCopy()) toast('⚠ Some saved data couldn\'t be read. A copy is kept — see Settings → Data.', 8000);

@@ -411,6 +411,29 @@ function carryTo(pr, target = planTarget()) {
   pr.carried = target; // keep the original so its day stays honest
 }
 
+// Plans saved before a routine block was removed from ROUTINE_KEYS still hold it: take it out of
+// today's and future plans (unless already done, so earned points stay) and refill the gaps with free time.
+function dropRemovedRoutine() {
+  const R = routineOf(state.profile);
+  const removed = b => b.status !== 'done' && (
+    (b.type === 'meal' && !R[b.tag]?.on) ||
+    (b.type === 'routine' && b.tag && !R[b.tag]?.on) ||
+    (b.type === 'review' && !R.review.on) ||
+    (b.type === 'winddown' && !R.winddown.on));
+  const t = todayKey();
+  for (const k in state.days) {
+    const plan = state.days[k].plan;
+    if (k < t || !plan || !plan.blocks.some(removed)) continue;
+    const { W, S } = dayBounds(k);
+    const timed = plan.blocks.filter(b => b.type !== 'free' && b.type !== 'anytime' && !removed(b));
+    const free = freeSlots(timed, W, S).map(f => ({
+      start: f.start, end: f.start + f.dur, title: f.title, type: 'free', points: 0, part: f.part,
+      key: `free|${f.title}|${f.part}`, id: uid(), status: null,
+    }));
+    plan.blocks = [...timed, ...free].sort((x, y) => x.start - y.start).concat(plan.blocks.filter(b => b.type === 'anytime'));
+  }
+}
+
 // rebuild upcoming plans after the daily routine changes (a locked today keeps its plan)
 function rebuildUpcoming() {
   const t = todayKey();
