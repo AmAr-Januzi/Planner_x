@@ -69,9 +69,6 @@ function coachMessages(k) {
   }
 
   // --- overload ---
-  if (day.workShort) {
-    push('change', `Your ${hours(workMinutes(state.profile.commit))} of work don't fit today — ${hours(day.workShort)} are missing. Start work earlier or move fixed-time tasks.`);
-  }
   const ov = day.plan?.overflow || [];
   if (ov.length) {
     const mins = ov.reduce((s, o) => s + o.minutes, 0);

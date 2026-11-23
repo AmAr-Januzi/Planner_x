@@ -65,20 +65,13 @@ function prioPoints(pr) {
   return Math.round(base * (1 + Math.max(0, pr.duration / 60 - 1) / 2));
 }
 
-// older saves stored an end time instead of hours
-function workMinutes(c) {
-  if (c.hours) return c.hours * 60;
-  let m = toMin(c.end || '17:00') - toMin(c.start);
-  if (m <= 0) m += 1440;
-  return m;
-}
 
 // Different ways to arrange the same day. "Rebuild" cycles through them.
 const PLAN_STYLES = [
   { name: 'Balanced',        icon: '⚖️', desc: 'important work in the morning, lighter tasks after lunch', main: 'morning',   low: 'afternoon', exercise: 'afternoon', chunk: 90 },
   { name: 'Early bird',      icon: '🌅', desc: 'exercise first, every priority done before lunch',        main: 'morning',   low: 'morning',   exercise: 'morning',   chunk: 90 },
   { name: 'Afternoon focus', icon: '🌇', desc: 'easy morning, deep work after lunch',                      main: 'afternoon', low: 'evening',   exercise: 'morning',   chunk: 90 },
-  { name: 'Short sprints',   icon: '⏱️', desc: '45-minute focus blocks with breaks in between',            main: 'morning',   low: 'afternoon', exercise: 'afternoon', chunk: 45 },
+  { name: 'Short sprints',   icon: '⏱️', desc: '45-minute focus blocks',                                    main: 'morning',   low: 'afternoon', exercise: 'afternoon', chunk: 45 },
 ];
 
 // `style` picks a PLAN_STYLES entry; by default the day keeps the style it already has.
@@ -154,27 +147,8 @@ function buildPlan(k, style) {
     }
   }
 
-  // 4. Work / school: fills `hours` of real work time from the start time,
-  //    flowing around lunch and anything already placed (so the day ends later instead of shrinking)
-  const c = p.commit;
-  const wd = dateOf(k).getDay();
-  if (c && c.enabled && c.days.includes(wd)) {
-    const cs = toMin(c.start);
-    const need = workMinutes(c);
-    let left = need;
-    const parts = [];
-    for (const [s, e] of freeIntervals(blocks, W, S)) {
-      if (left <= 0) break;
-      const a = Math.max(s, cs);
-      const take = Math.min(e - a, left);
-      if (take >= 15) { parts.push(add(a, take, c.label || 'Work / School', 'commit', { part: parts.length })); left -= take; }
-    }
-    parts.forEach((b, i) => {
-      b.points = Math.max(5, Math.round(POINTS.commit * (b.end - b.start) / need));
-      if (parts.length > 1) b.title = `${c.label || 'Work / School'} (part ${i + 1}/${parts.length})`;
-    });
-    if (left > 0) day.workShort = left; else delete day.workShort;
-  } else delete day.workShort;
+  // 4. (no work / school block any more; clear the "work doesn't fit" flag older plans may carry)
+  delete day.workShort;
 
   const startOf = { morning: W, afternoon: lunchEnd, evening: Math.max(lunchEnd, toMin('17:00')) };
   const needsExercise = R.exercise.on && !hasExercise && !prios.some(x => x.category === 'health') && !habits.some(x => x.category === 'health');
@@ -212,10 +186,6 @@ function buildPlan(k, style) {
       const b = add(st, take, pr.title, 'task', { pid: pr.id, part: nextPart++ });
       chunks.push(b);
       remaining -= take;
-      // short break after a long focus block, if there is room
-      if (take >= 45 && freeIntervals(blocks, b.end, b.end + 10).some(([s, e]) => s === b.end && e === b.end + 10)) {
-        add(b.end, 10, 'Short break — stand up, stretch, drink water', 'break', { part: `${pr.id}-${chunks.length}` });
-      }
     }
     const base = prioPoints(pr);
     const placed = pr.duration - remaining;
@@ -411,11 +381,13 @@ function carryTo(pr, target = planTarget()) {
   pr.carried = target; // keep the original so its day stays honest
 }
 
-// Plans saved before a routine block was removed from ROUTINE_KEYS still hold it: take it out of
-// today's and future plans (unless already done, so earned points stay) and refill the gaps with free time.
+// Plans saved before a block kind was dropped (routines outside ROUTINE_KEYS, short breaks, work / school)
+// still hold it: take it out of today's and future plans (unless already done, so earned points stay)
+// and refill the gaps with free time.
 function dropRemovedRoutine() {
   const R = routineOf(state.profile);
   const removed = b => b.status !== 'done' && (
+    b.type === 'break' || b.type === 'commit' || // no longer added
     (b.type === 'meal' && !R[b.tag]?.on) ||
     (b.type === 'routine' && b.tag && !R[b.tag]?.on) ||
     (b.type === 'review' && !R.review.on) ||

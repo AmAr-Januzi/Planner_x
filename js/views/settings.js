@@ -5,8 +5,6 @@
 /* ---------- settings ---------- */
 
 function profileFields(p) {
-  const c = p?.commit || { enabled: true, label: 'Work', start: '09:00', hours: 8, days: [1, 2, 3, 4, 5] };
-  const workH = workMinutes(c) / 60;
   const we = p?.weekend || { enabled: false, wake: '09:00', sleep: '00:00' };
   return `
   <div class="row"><label for="sName">Your name</label><input id="sName" name="name" required maxlength="30" value="${esc(p?.name)}"></div>
@@ -20,24 +18,6 @@ function profileFields(p) {
   <div class="row2">
     <div><label for="wWake">Weekend wake up</label><input id="wWake" type="time" name="wWake" value="${esc(we.wake)}"></div>
     <div><label for="wSleep">Weekend sleep</label><input id="wSleep" type="time" name="wSleep" value="${esc(we.sleep)}"></div>
-  </div>
-  <div class="row">
-    <label style="display:flex;gap:8px;align-items:center;color:var(--text)"><input type="checkbox" name="cEnabled" style="width:auto" ${c.enabled ? 'checked' : ''}> I have fixed work / school hours</label>
-  </div>
-  <div class="row2">
-    <div><label for="cLabel">Name</label><input id="cLabel" name="cLabel" maxlength="30" value="${esc(c.label)}"></div>
-    <div class="row2" style="margin:0">
-      <div><label for="cStart">Starts at</label><input id="cStart" type="time" name="cStart" value="${esc(c.start)}"></div>
-      <div><label for="cHours">Hours of work</label>
-        <select id="cHours" name="cHours">
-          ${[2, 3, 4, 5, 6, 7, 7.5, 8, 9, 10, 11, 12].map(h => `<option value="${h}" ${h === workH ? 'selected' : ''}>${hours(h * 60)}</option>`).join('')}
-        </select>
-      </div>
-    </div>
-  </div>
-  <p class="muted small" style="margin-top:-4px">Lunch doesn't count as work — if it falls inside work time, your workday ends later.</p>
-  <div class="row days-pick">
-    ${[1, 2, 3, 4, 5, 6, 0].map(d => `<label><input type="checkbox" name="cDays" value="${d}" ${c.days.includes(d) ? 'checked' : ''}>${DAY_NAMES[d].slice(0, 3)}</label>`).join('')}
   </div>
   ${routineFields(p)}`;
 }
@@ -83,22 +63,10 @@ function readProfile(form) {
     toast('Your weekend day needs at least 8 awake hours too');
     return null;
   }
-  const workH = +f.get('cHours') || 8;
-  if (f.get('cEnabled') === 'on' && workH * 60 > awake - 3 * 60) {
-    toast(`${hours(workH * 60)} of work doesn't fit in your day — wake earlier, sleep later or work fewer hours`);
-    return null;
-  }
   return {
     name: f.get('name').trim(),
     wake, sleep, weekend,
     routine: readRoutine(f),
-    commit: {
-      enabled: f.get('cEnabled') === 'on',
-      label: (f.get('cLabel') || 'Work / School').trim(),
-      start: f.get('cStart') || '09:00',
-      hours: workH,
-      days: f.getAll('cDays').map(Number),
-    },
   };
 }
 
@@ -167,7 +135,7 @@ function viewSettings() {
         <table class="levels-table">
           ${rows.map((l, i) => `<tr class="${i + 1 === state.level ? 'cur' : ''} ${i + 1 > state.level ? 'locked' : ''}"><td>Level ${i + 1}</td><td>${rankBadge(i + 1)}</td><td style="text-align:right">${l.need} pts</td><td>${i + 1 < state.level ? '✓' : i + 1 === state.level ? '← you' : ''}</td></tr>`).join('')}
         </table>
-        <p class="muted small">How to earn: planning — adding a priority +2, daily goal +3, week/month/year goal +3, "what I did" entry +2, quick note +1 (up to ${ADD_CAP} pts a day). Doing — priorities +10/+20/+30 for the first hour by importance (half that for each extra hour), a full workday +40, exercise +15, daily goals +10, routines & meals +5, wind-down +10, breaks +2. Earn 80% of a day's points: +20 bonus, 100%: +50. Week / month / year goals: +40 / +80 / +200.</p>
+        <p class="muted small">How to earn: planning — adding a priority +2, daily goal +3, week/month/year goal +3, "what I did" entry +2, quick note +1 (up to ${ADD_CAP} pts a day). Doing — priorities +10/+20/+30 for the first hour by importance (half that for each extra hour), exercise +15, daily goals +10, wake-up routine +5. Earn 80% of a day's points: +20 bonus, 100%: +50. Week / month / year goals: +40 / +80 / +200.</p>
       </div>
       <div class="card">
         <h2>💾 Data</h2>
